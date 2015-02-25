@@ -1,0 +1,5 @@
+{
+  "clientID": "changeme",
+  "clientSecret": "Changeme",
+  "callbackURL": "http://localhost:3000/auth/spotify/callback"
+}

@@ -1,0 +1,26 @@
+extends pagelayout
+
+block nav
+    ul.nav.navbar-nav
+        li.active
+            a(href='#') Chat
+        li
+            a(href='/logout') Logout
+    div.navbar-right
+        p.navbar-text= user.name
+        img.profile(src='#{user.pic}')
+
+block head
+    script(src='/socket.io/socket.io.js')
+    script(src='/javascripts/emoticons.js')
+    script(src='/javascripts/moment-with-locales.min.js')
+    script(src='/javascripts/jquery.storageapi.min.js')
+    script(src='/javascripts/skixdrop.js')
+
+block content
+    div.chat-scroll
+
+block footer
+    form.form-inline
+        input.message.form-control(type='text', placeholder='message',name='message')
+        button.btn.btn-default send

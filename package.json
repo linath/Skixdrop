@@ -1,0 +1,27 @@
+{
+  "name": "project_name_goes_here",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "body-parser": "~1.10.1",
+    "cookie-parser": "~1.3.3",
+    "debug": "~2.1.1",
+    "express": "~4.11.0",
+    "express-session": "^1.10.1",
+    "express-session-mongo": "^0.1.0",
+    "jade": "~1.9.0",
+    "konphyg": "^1.4.0",
+    "less-middleware": "1.0.x",
+    "morgan": "~1.5.1",
+    "passport": "^0.2.1",
+    "passport-facebook": "^1.0.3",
+    "passport-spotify": "^0.1.0",
+    "serve-favicon": "~2.2.0",
+    "socket.io": "^1.2.1",
+    "socket.io.session": "^1.0.13",
+    "underscore": "^1.7.0"
+  }
+}

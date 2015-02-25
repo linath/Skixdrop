@@ -1,0 +1,15 @@
+extends layout
+
+block nav
+  li.active
+    a(href='#') Welcome
+
+block content
+  h1.cover-heading Welcome to Skixdrop
+  p.lead To use Skixdrop you have to log in using Spotify or Facebook
+  p.lead
+    a.btn(href='/auth/spotify')
+      img(src='/images/spotify_login_button.png')
+    p.lead
+    a.btn(href='/auth/facebook')
+      img(src='/images/fb_login_button.png')

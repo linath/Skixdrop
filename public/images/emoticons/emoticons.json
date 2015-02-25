@@ -1,0 +1,409 @@
+{
+    "Emoticons": {
+        "aa.gif": {
+            "Equivalents": [
+                "O:-)",
+                "O=)",
+                "o:-)",
+                "o=)"
+            ],
+            "Name": "Angel"
+        },
+        "ab.gif": {
+            "Equivalents": [
+                ":)",
+                ":-)",
+                "=-)",
+                "=)"
+            ],
+            "Name": "Happy"
+        },
+        "ac.gif": {
+            "Equivalents": [
+                ":(",
+                ":-(",
+                ";-(",
+                ";("
+            ],
+            "Name": "Sad"
+        },
+        "bx.gif": {
+            "Equivalents": [
+                ";)",
+                ";-)"
+            ],
+            "Name": "Winking"
+        },
+        "ae.gif": {
+            "Equivalents": [
+                ":p",
+                ":-P",
+                ":P",
+                ":-p"
+            ],
+            "Name": "Tongue"
+        },
+        "af.gif": {
+            "Equivalents": [
+                "8)",
+                "8-)",
+                "B-)",
+                "B)"
+            ],
+            "Name": "Cool"
+        },
+        "ag.gif": {
+            "Equivalents": [
+                ":D",
+                ":-D"
+            ],
+            "Name": "Laughing"
+        },
+        "ah.gif": {
+            "Equivalents": [
+                ":[",
+                ":-["
+            ],
+            "Name": "Embarassed"
+        },
+        "ai.gif": {
+            "Equivalents": [
+                ":o",
+                "=-O",
+                "=O",
+                ":-O",
+                ":O",
+                ":-o",
+                ":-0",
+                ":0"
+            ],
+            "Name": "Shocked"
+        },
+        "aj.gif": {
+            "Equivalents": [
+                ":*",
+                ":-*"
+            ],
+            "Name": "Kiss"
+        },
+        "ak.gif": {
+            "Equivalents": [
+                ":'("
+            ],
+            "Name": "Crying"
+        },
+        "al.gif": {
+            "Equivalents": [
+                ":x",
+                ":-X",
+                ":-x",
+                ":X"
+            ],
+            "Name": "Silent"
+        },
+        "am.gif": {
+            "Equivalents": [
+                ">:o",
+                ">:O",
+                ">:0"
+            ],
+            "Name": "Angry"
+        },
+        "an.gif": {
+            "Equivalents": [
+                ":-|",
+                ":|"
+            ],
+            "Name": "Don't Understand"
+        },
+        "ao.gif": {
+            "Equivalents": [
+                ":-\\",
+                ":-/",
+                ":\\",
+                ":/"
+            ],
+            "Name": "Pensive"
+        },
+        "ap.gif": {
+            "Equivalents": [
+              "*jokingly*",
+                "*JOKINGLY*"
+            ],
+            "Name": "Jokingly"
+        },
+        "aq.gif": {
+            "Equivalents": [
+                "]:>",
+                "]:->"
+            ],
+            "Name": "Devil"
+        },
+        "ar.gif": {
+            "Equivalents": [
+                "[:}",
+                "[:-}"
+            ],
+            "Name": "Headphones"
+        },
+        "as.gif": {
+            "Equivalents": [
+                "*kissed*",
+                "*KISSED*",
+                "*kissed*"
+            ],
+            "Name": "Kissed"
+        },
+        "at.gif": {
+            "Equivalents": [
+                ":!",
+                ":-!"
+            ],
+            "Name": "Sick"
+        },
+        "au.gif": {
+            "Equivalents": [
+                "*tired*",
+                "*TIRED*",
+                ":tired:"
+            ],
+            "Name": "Tired"
+        },
+        "av.gif": {
+            "Equivalents": [
+                "*stop*",
+                ":stop:",
+                "*STOP*"
+            ],
+            "Name": "Stop"
+        },
+        "aw.gif": {
+            "Equivalents": [
+                "*kiss*",
+                ":kiss:",
+                "*KISSING*",
+                "*kissing*",
+                "*KISS*"
+            ],
+            "Name": "Kissing"
+        },
+        "ax.gif": {
+            "Equivalents": [
+                "@}->--",
+                "@}->-"
+            ],
+            "Name": "Rose"
+        },
+        "ay.gif": {
+            "Equivalents": [
+                "*thumbs*",
+                ":thumbs:",
+                "*thumbs up*",
+                "*THUMBS UP*"
+            ],
+            "Name": "Thumbs Up"
+        },
+        "az.gif": {
+            "Equivalents": [
+                "*drink*",
+                ":drink:",
+                "*DRINK*"
+            ],
+            "Name": "Drink"
+        },
+        "ba.gif": {
+            "Equivalents": [
+                "<3",
+                "*IN LOVE*",
+                "*in love*"
+            ],
+            "Name": "In Love"
+        },
+        "bb.gif": {
+            "Equivalents": [
+                "@="
+            ],
+            "Name": "Bomb"
+        },
+        "bc.gif": {
+            "Equivalents": [
+                "*help*",
+                ":help:",
+                "*HELP*"
+            ],
+            "Name": "Help"
+        },
+        "bd.gif": {
+            "Equivalents": [
+                "\\m/"
+            ],
+            "Name": "Rock On"
+        },
+        "be.gif": {
+            "Equivalents": [
+                "%)"
+            ],
+            "Name": "Confused"
+        },
+        "bf.gif": {
+            "Equivalents": [
+                "*ok*",
+                ":ok:",
+                "*OK*"
+            ],
+            "Name": "OK"
+        },
+        "bg.gif": {
+            "Equivalents": [
+                "*sup*",
+                ":sup:",
+                "*WASSUP*",
+                "*wassup*",
+                "*SUP*"
+            ],
+            "Name": "Wassup"
+        },
+        "bh.gif": {
+            "Equivalents": [
+                "*sry*",
+                ":sry:",
+                "*SORRY*",
+                "*sorry*"
+            ],
+            "Name": "Sorry"
+        },
+        "bi.gif": {
+            "Equivalents": [
+                "*bravo*",
+                ":bravo:",
+                "*BRAVO*"
+            ],
+            "Name": "Bravo"
+        },
+        "bj.gif": {
+            "Equivalents": [
+                "*rofl*",
+                ":rofl:",
+                "*lol*",
+                ":lol:",
+                "*ROFL*",
+                "*LOL*"
+            ],
+            "Name": "ROFL"
+        },
+        "bk.gif": {
+            "Equivalents": [
+                "*pardon*",
+                ":pardon:",
+                "*PARDON*"
+            ],
+            "Name": "Pardon"
+        },
+        "bl.gif": {
+            "Equivalents": [
+                "*no*",
+                ":no:",
+                "*NO*"
+            ],
+            "Name": "No"
+        },
+        "bm.gif": {
+            "Equivalents": [
+                "*crazy*",
+                ":crazy:",
+                "*CRAZY*"
+            ],
+            "Name": "Crazy"
+        },
+        "bn.gif": {
+            "Equivalents": [
+                "*unknown*",
+                ":unknown:",
+                "*DONT_KNOW*",
+                "*UNKNOWN*"
+            ],
+            "Name": "Don't Know"
+        },
+        "bo.gif": {
+            "Equivalents": [
+                "*dance*",
+                ":dance:",
+                "*DANCE*"
+            ],
+            "Name": "Dance"
+        },
+        "bp.gif": {
+            "Equivalents": [
+                "*yahoo*",
+                ":yahoo:",
+                "*YAHOO*",
+                "*YAHOO!*"
+            ],
+            "Name": "Yahoo"
+        },
+        "bq.gif": {
+            "Equivalents": [
+                "*hi*",
+                ":hi:",
+                "*HI*",
+                "*PREVED*",
+                "*PRIVET*",
+                "*HELLO*",
+              "*hello*"
+            ],
+            "Name": "Hello"
+        },
+        "br.gif": {
+            "Equivalents": [
+                "*bye*",
+                ":bye:",
+                "*BYE*"
+            ],
+            "Name": "Bye"
+        },
+        "bs.gif": {
+            "Equivalents": [
+                "*yes*",
+                ":yes:",
+                "*YES*"
+            ],
+            "Name": "Yes"
+        },
+        "bt.gif": {
+            "Equivalents": [
+                ";D",
+                "*ACUTE*",
+                "*acute*"
+            ],
+            "Name": "Acute"
+        },
+        "bu.gif": {
+            "Equivalents": [
+                "*wall*",
+                ":wall:",
+                "*WALL*",
+                "*DASH*",
+                "*dash*"
+            ],
+            "Name": "Wall"
+        },
+        "bv.gif": {
+            "Equivalents": [
+                "*write*",
+                ":write:",
+                "*WRITE*",
+                "*MAIL*",
+                "*mail*"
+            ],
+            "Name": "Write"
+        },
+        "bw.gif": {
+            "Equivalents": [
+                "*scratch*",
+                ":scratch:",
+                "*SCRATCH*"
+            ],
+            "Name": "Scratch"
+        }
+    }
+}
