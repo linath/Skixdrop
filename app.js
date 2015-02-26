@@ -207,7 +207,7 @@ var chat = io.of('/chat').on('connection', function(socket){
 	socket.broadcast.emit('message', {message: 'hat den Raum betreten!', user: getUserDataFromSessions(socket.session.passport.user)});
 
     socket.on('getChatUser', function(){
-        chat.emit('userInChat', {users:  getUsers(chat)});
+        socket.emit('userInChat', {users:  getUsers(chat)});
     });
 
     socket.on('send-message', function(data){
