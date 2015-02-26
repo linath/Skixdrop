@@ -203,17 +203,12 @@ io.use(socketSession.parser);
 
 var chat = io.of('/chat').on('connection', function(socket){
 
-    var usersInChat = [];
-    for(var key in chat.connected){
-       var client = chat.connected[key];
-
-        if(client.session.passport != socket.session.passport) {
-            usersInChat.push(getUserDataFromSessions(client.session.passport.user));
-        }
-    }
-    _.unique(usersInChat);
-    socket.emit('welcome', {users: usersInChat});
+    socket.emit('welcome', {users:  getUsers(chat)});
 	socket.broadcast.emit('message', {message: 'hat den Raum betreten!', user: getUserDataFromSessions(socket.session.passport.user)});
+
+    socket.on('getChatUser', function(){
+        chat.emit('userInChat', {users:  getUsers(chat)});
+    });
 
     socket.on('send-message', function(data){
 	if(data.message.trim() == '') return;
@@ -223,6 +218,17 @@ var chat = io.of('/chat').on('connection', function(socket){
 });
 
 chat.use(socketSession.parser);
+
+function getUsers(chat) {
+    var usersInChat = [];
+    for(var key in chat.connected){
+        var client = chat.connected[key];
+        console.log('client', client);
+        usersInChat.push(getUserDataFromSessions(client.session.passport.user));
+
+    }
+    return _.unique(usersInChat);
+}
 
 
 /**

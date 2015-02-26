@@ -89,6 +89,16 @@ $(function () {
 
     });
 
+    chat.on('userInChat', function(data){
+        var cr = $('<div/>').addClass('chat-row').append($('<div/>').addClass('chat-user')).append($('<div/>').addClass('chat-messages').append($('<span/>'))).append($('<div/>').addClass('chat-extras'));
+        $('.chat-scroll').append(cr);
+
+        $('.chat-messages span', cr).append($('<div/>').text("Folgende User sind im Raum:"));
+        data.users.forEach(function (user) {
+            $('.chat-messages span', cr).append($('<div/>').addClass('userlist').append($('<img/>').attr('src', user.image).addClass('profile')).append($('<div/>').text(user.name)));
+        });
+    });
+
     var inputMessage = $('input.message');
     inputMessage.focus();
 
@@ -101,11 +111,12 @@ $(function () {
             var cr = $('<div/>').addClass('chat-row').append($('<div/>').addClass('chat-user')).append($('<div/>').addClass('chat-messages').append($('<span/>'))).append($('<div/>').addClass('chat-extras'));
             $('.chat-scroll').append(cr);
 
-            if (message === '/help') {
+            if (message === '/help' || message === '/h') {
                 var help = '<b>Hilfe:</b><table class="help"><tr><th>Befehl</th><th>Beschreibung</th></tr>';
 
                 help += '<tr><td>/autoscroll</td><td>&Auml;ndert das Autoscroll verhalten. Aktuell ist Autoscroll <b>'+($.localStorage.get('doNotScroll') === true ? 'deaktiviert' : 'aktiviert')+'</b>.</td></tr>';
                 help += '<tr><td>/emots /emoticons</td><td>Auflistung aller Emoticons</td></tr>';
+                help += '<tr><td>/w</td><td>Aktuelle User im Chat</td></tr>';
 
                 help += '</table>';
 
@@ -121,6 +132,9 @@ $(function () {
             } else if (message === "/autoscroll") {
                 $.localStorage.set('doNotScroll', !$.localStorage.get('doNotScroll'));
                 $('.chat-messages span', cr).html('<b>Autoscroll</b> ist nun <b>' + ($.localStorage.get('doNotScroll') === true ? 'deaktiviert' : 'aktiviert') + '</b>');
+            } else if (message === '/w') {
+                chat.emit('getChatUser');
+                cr.remove();
             } else {
                 $('.chat-messages span', cr).html('<b>' + message + '</b> ist kein gültiger Befehl. Für Hilfe <b>/help</b> eingeben.');
             }
