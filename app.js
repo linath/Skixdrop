@@ -11,7 +11,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoStore = require('express-session-mongo');
-
 var socketIOSession = require('socket.io.session');
 
 var passport = require('passport');
@@ -58,7 +57,13 @@ app.use(cookieParser());
 app.use(require('less-middleware')(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-var sessionStore = new mongoStore({db: 'skixdrop-sessions'});
+var sessionStore;
+
+if (app.get('env') === 'development') {
+    sessionStore = new session.MemoryStore();
+} else {
+    sessionStore = new mongoStore({db: 'skixdrop-sessions'});
+}
 
 var sessionSettings = {
     store: sessionStore,

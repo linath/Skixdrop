@@ -1,9 +1,9 @@
 {
-  "name": "project_name_goes_here",
-  "version": "0.0.0",
+  "name": "Skixdrop",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node app"
   },
   "dependencies": {
     "body-parser": "~1.10.1",
