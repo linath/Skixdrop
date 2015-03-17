@@ -60,7 +60,7 @@ $(function () {
         }
     }
 
-    var giphyRegex = /^https?:\/\/giphy\.com\/gifs\/.*?-([a-zA-Z0-9]+)$/;
+    var giphyRegex = /^https?:\/\/giphy\.com\/gifs\/.*?-?([a-zA-Z0-9]+)$/;
     if (typeof String.prototype.isGiphyUrl != 'function') {
         String.prototype.isGiphyUrl = function () {
             var match = this.match(giphyRegex);
