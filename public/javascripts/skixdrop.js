@@ -44,6 +44,42 @@ $(function () {
         }
     }
 
+    var spotifyRegex = /^https?:\/\/open\.spotify\.com\/(album|track|user\/[^/]+\/playlist)\/([a-zA-Z0-9]+)$/;
+    if (typeof String.prototype.isSpotifyUrl != 'function') {
+        String.prototype.isSpotifyUrl = function () {
+            var match = this.match(spotifyRegex);
+            return !!(match && match[1] && match[2]);
+        }
+    }
+
+    if (typeof String.prototype.getSpotifyEmbedUrl != 'function') {
+        String.prototype.getSpotifyEmbedUrl = function () {
+            var match = this.match(spotifyRegex);
+            if (match && match[1] && match[2]) {
+                return 'spotify:' + match[1].replace(/\//g, ':') + ':' + match[2];
+            }
+            return null;
+        }
+    }
+
+    var giphyRegex = /^https?:\/\/giphy\.com\/gifs\/.*?-?([a-zA-Z0-9]+)$/;
+    if (typeof String.prototype.isGiphyUrl != 'function') {
+        String.prototype.isGiphyUrl = function () {
+            var match = this.match(giphyRegex);
+            return !!(match && match[1]);
+        }
+    }
+
+    if (typeof String.prototype.getGiphyUrl != 'function') {
+        String.prototype.getGiphyUrl = function () {
+            var match = this.match(giphyRegex);
+            if (match && match[1]) {
+                return match[1];
+            }
+            return null;
+        }
+    }
+
     //if("Notification" in window){
     //    if (Notification.permission !== 'denied') {
     //        Notification.requestPermission(function (permission) {
@@ -67,7 +103,7 @@ $(function () {
         $.emoticons.define(emots);
     });
 
-    var chat = io('/chat');
+    var chat = io('///chat');
     chat.on('message', function (data) {
         parseAndShowMessage(data);
     });
@@ -171,16 +207,6 @@ $(function () {
 
         message = message.replace(/</g, '&lt;');
 
-        var res = message.match(/spotify:track:[a-zA-Z0-9]+/g);
-        if (res) {
-            $.unique(res);
-            res.forEach(function (uri) {
-                $('.chat-extras', cr).append(
-                    $('<iframe>')
-                        .attr('src', 'https://embed.spotify.com/?uri=' + uri)
-                        .attr('width', 300).attr('height', 80).attr('frameborder', 0).attr('allowtransparency', true)).append('<br/>');
-            });
-        }
         res = message.match(/(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?/ig);
 
         if (res) {
@@ -198,6 +224,21 @@ $(function () {
                         $('<iframe>')
                             .attr('src', '//www.youtube.com/embed/' + url.getYoutubeVideoId() + '?rel=0' )
                             .attr('width', 300).attr('height', 169).attr('frameborder', 0).attr('allowfullscreen', true)).append('<br/>');
+                }
+
+                if(url.isSpotifyUrl()) {
+                    var uri = url.getSpotifyEmbedUrl();
+                    $('.chat-extras', cr).append(
+                        $('<iframe>')
+                            .attr('src', 'https://embed.spotify.com/?uri=' + uri)
+                            .attr('width', 300).attr('height', uri.indexOf(':track:') !== -1 ? 80 : 380).attr('frameborder', 0).attr('allowtransparency', true)).append('<br/>');
+               }
+
+                if(url.isGiphyUrl()) {
+                    var uri = url.getGiphyUrl();
+                    $('.chat-extras', cr).append(
+                        $('<img>').attr('src', 'http://media.giphy.com/media/' + uri + '/giphy.gif')
+                    );
                 }
 
             });
