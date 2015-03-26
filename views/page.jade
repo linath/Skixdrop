@@ -15,12 +15,16 @@ block head
     script(src='/javascripts/emoticons.js')
     script(src='/javascripts/moment-with-locales.min.js')
     script(src='/javascripts/jquery.storageapi.min.js')
+    script(src='/javascripts/giphybutton.js')
     script(src='/javascripts/skixdrop.js')
 
 block content
+    div(id='giphyModal')
     div.chat-scroll
 
 block footer
     form.form-inline
-        input.message.form-control(type='text', placeholder='message',name='message')
+        input.message.form-control(type='text', placeholder='message',name='message', id='message')
         button.btn.btn-default send
+        button(id='giphyButton' type='button').btn.btn-default Add GIF
+    

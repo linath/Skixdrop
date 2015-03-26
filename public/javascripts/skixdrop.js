@@ -3,6 +3,8 @@
  */
 $(function () {
 
+    var gipyhButton = new GiphyButton("giphyButton", "message", "giphyModal");
+
     var window_focus = true;
 
     $(window).focus(function() {

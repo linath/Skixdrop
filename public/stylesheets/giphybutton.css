@@ -1,0 +1,107 @@
+.giphyButton {
+  -moz-box-shadow:inset 0px 1px 0px 0px #9acc85;
+  -webkit-box-shadow:inset 0px 1px 0px 0px #9acc85;
+  box-shadow:inset 0px 1px 0px 0px #9acc85;
+  background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #74ad5a), color-stop(1, #68a54b));
+  background:-moz-linear-gradient(top, #74ad5a 5%, #68a54b 100%);
+  background:-webkit-linear-gradient(top, #74ad5a 5%, #68a54b 100%);
+  background:-o-linear-gradient(top, #74ad5a 5%, #68a54b 100%);
+  background:-ms-linear-gradient(top, #74ad5a 5%, #68a54b 100%);
+  background:linear-gradient(to bottom, #74ad5a 5%, #68a54b 100%);
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#74ad5a', endColorstr='#68a54b',GradientType=0);
+  background-color:#74ad5a;
+  border:1px solid #3b6e22;
+  display:inline-block;
+  cursor:pointer;
+  color:#ffffff;
+  font-family:arial;
+  font-size:13px;
+  font-weight:bold;
+  padding:6px 12px;
+  text-decoration:none;
+}
+.giphyButton:hover {
+  background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #68a54b), color-stop(1, #74ad5a));
+  background:-moz-linear-gradient(top, #68a54b 5%, #74ad5a 100%);
+  background:-webkit-linear-gradient(top, #68a54b 5%, #74ad5a 100%);
+  background:-o-linear-gradient(top, #68a54b 5%, #74ad5a 100%);
+  background:-ms-linear-gradient(top, #68a54b 5%, #74ad5a 100%);
+  background:linear-gradient(to bottom, #68a54b 5%, #74ad5a 100%);
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#68a54b', endColorstr='#74ad5a',GradientType=0);
+  background-color:#68a54b;
+}
+.giphyButton:active {
+  position:relative;
+  top:1px;
+}
+
+#hintergrund {
+  display:none;
+  z-index:1;
+  position: fixed;
+  height:100%;
+  width:100%;
+  top:0px;
+  left:0px;
+  background:#000000;
+}
+ 
+#popup {
+  display: none;
+  z-index: 2;
+  position: fixed;
+  width:450px;
+  top: 20%;
+  left: 50%;
+  margin-left: -250px;
+  background: none repeat scroll 0 0 #FFFFFF;
+  border: 8px solid #ccc;
+  border-radius: 5px 5px 5px 5px;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 14px;
+  color: #000;
+}
+ 
+div.schliessen {
+  position: relative;
+  height: 30px;
+  width: 30px;
+  left: 27px;
+  bottom: 24px;
+  background: url("close.png") no-repeat scroll 0 0 transparent;
+  float: right;
+  cursor: pointer;
+}
+ 
+#popup_inhalt {
+    margin: 8px 14px;
+}
+
+input
+{
+  width: 100%;
+  padding: 5px;
+  margin: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;  
+}
+
+.giphyList {
+}
+
+.giphyList ul { /* also works with ol */
+    margin: 0;
+    padding: 0;
+    width: 100%; /* or your desired width */
+    text-align: center; /* this will center the list items */
+}
+
+.giphyList li {
+    display: inline-block; /* the key bit */
+    *display: inline; /* IE7 hack */
+    *zoom: 1; /* IE7 hack */
+    margin:5px;
+}
