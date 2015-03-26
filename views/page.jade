@@ -19,12 +19,12 @@ block head
     script(src='/javascripts/skixdrop.js')
 
 block content
-    div(id='giphyModal')
+    div#giphyModal
     div.chat-scroll
 
 block footer
     form.form-inline
-        input.message.form-control(type='text', placeholder='message',name='message', id='message')
+        input#message.message.form-control(type='text', placeholder='message',name='message')
         button.btn.btn-default send
-        button(id='giphyButton' type='button').btn.btn-default Add GIF
+        button#giphyButton(type='button').btn.btn-default Add GIF
     
