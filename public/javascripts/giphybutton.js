@@ -7,7 +7,8 @@ var GiphyButton = (function () {
   var giphyTextInput = "giphyTextInput";
   var giphyDialogId = "giphyDialog";
   var jqxhr;
-  var searchResultsCount = 6;
+  var searchResultsUpperBound = 6;
+  var imageLinkMap = {};
 
   // constructor
   var GiphyButton = function (buttonId, textInputId, dialogId, numberOfSearchResults) {
@@ -25,7 +26,7 @@ var GiphyButton = (function () {
     }
 
     if(typeof numberOfSearchResults !== 'undefined'){
-      searchResultsCount = numberOfSearchResults;
+      searchResultsUpperBound = numberOfSearchResults;
     }
 
     if(typeof $(giphyButtonId) === 'undefined'){
@@ -58,6 +59,7 @@ var GiphyButton = (function () {
       e.preventDefault();
     });
 
+    // set focus to dialog
     $(giphyDialogId).on('shown.bs.modal', function() {
         var input = $(giphyDialogId + " > #giphyModalDialog" +
                         " > #giphyModalContent" +
@@ -149,17 +151,24 @@ var GiphyButton = (function () {
   }
 
   function appendGifUrls(id, data) {
-    
-    var images = new Array();
-    data.forEach(function(entry) {
 
-      var url = entry.images.fixed_width.url;
-      
-      if(typeof url !== 'undefined'){
-        images.push(url);
+    // reset image link map
+    imageLinkMap = {};
+
+    if(data.length == 0) {
+      addNoItemsFoundMessage(id);
+      return;
+    }
+
+    var images = new Array();    
+    data.forEach(function(entry) {
+      if( typeof entry.images.fixed_width.url !== 'undefined' && 
+          typeof entry.images.original.url !== 'undefined' ){
+        imageLinkMap[entry.images.fixed_width.url] = entry.images.original.url;
+        images.push(entry.images.fixed_width.url);
       };
-      
     });
+
     var list = addList(id, images);
   }
 
@@ -168,8 +177,9 @@ var GiphyButton = (function () {
     var listContainer = $(id);
     var listDiv = $("<div class=\"giphyList\">").appendTo(listContainer);
     var list = $("<ul>").appendTo(listDiv);
+    var searchResults = listData.length < searchResultsUpperBound ? listData.length : searchResultsUpperBound;
 
-    for (i = 0; i < searchResultsCount; i++) { 
+    for (i = 0; i < searchResults; i++) { 
       var listItem = $("<li>").appendTo(list);
       var imageTag = '<img src="' + listData[i] + '" alt="gif" data-dismiss="modal"/>';
       var image = $(imageTag).appendTo(listItem);
@@ -177,6 +187,11 @@ var GiphyButton = (function () {
         postImageLink(event);
       });
     }
+  }
+
+  function addNoItemsFoundMessage(id) {
+    var listContainer = $(id);
+    var listDiv = $("<p class=\"text-center\">No items found. Try another search phrase.</p>").appendTo(listContainer);
   }
 
   function postImageLink(event) {
@@ -188,7 +203,12 @@ var GiphyButton = (function () {
         currentValue = currentValue + " ";
       }
 
-      $(giphyTextInput).val(currentValue + event.target.src);
+      // get original size gif url
+      var gifUrl = imageLinkMap[event.target.src];
+
+      if(typeof gifUrl !== 'undefined') {
+        $(giphyTextInput).val(currentValue + gifUrl);  
+      }
 
     };
   }
