@@ -6,9 +6,11 @@ var GiphyButton = (function () {
   var giphyButtonId = "giphyButton";
   var giphyTextInput = "giphyTextInput";
   var giphyDialogId = "giphyDialog";
+
   var jqxhr;
-  var searchResultsUpperBound = 6;
+  var pageSize = 6;
   var imageLinkMap = {};
+  var pagingOffset = 0;
 
   // constructor
   var GiphyButton = function (buttonId, textInputId, dialogId, numberOfSearchResults) {
@@ -26,7 +28,7 @@ var GiphyButton = (function () {
     }
 
     if(typeof numberOfSearchResults !== 'undefined'){
-      searchResultsUpperBound = numberOfSearchResults;
+      pageSize = numberOfSearchResults;
     }
 
     if(typeof $(giphyButtonId) === 'undefined'){
@@ -46,12 +48,21 @@ var GiphyButton = (function () {
     // register event listeners
 
     $("#giphyModalInput").keyup(function() {
-      loadGifs(this.value);
+      pagingOffset = 0;
+      loadGifs();
     });
 
     $(giphyButtonId).click(function(){
       $( "#giphyUrls" ).empty();
       $(giphyDialogId).modal('show');
+    });
+
+    $('#giphyPagingButtonBack').click(function(){
+      decreasePagingOffset();
+    });
+
+    $('#giphyPagingButtonForward').click(function(){
+      increasePagingOffset();
     });
 
     // required to make text input focus work in google chrome.
@@ -107,21 +118,45 @@ var GiphyButton = (function () {
     $("<p>Add search terms separated by spaces.</p>").appendTo(bodyDiv);
     $("<label for=\"giphyModalInput\">Search:</label>").appendTo(bodyDiv);
     
+    // add giphy search input field
     var searchInput = $("<input>").appendTo(bodyDiv);
     searchInput.attr('type','text').
     attr('id','giphyModalInput').
     attr('name','search').
     attr('autofocus','');
     
+    // add giphy image thumbnails div
     var giphyUrlsDiv = $("<div>").appendTo(bodyDiv);
     giphyUrlsDiv.attr('id','giphyUrls');
+
+    // add paging buttons div
+    var giphyPagingButtonsDiv = $("<div>").appendTo(bodyDiv);
+    giphyPagingButtonsDiv.attr('id', 'giphyPagingButtons');
+    giphyPagingButtonsDiv.addClass("text-center");
+    giphyPagingButtonsDiv.css('padding', '10px');
+
+    var giphyPagingButtonBack = $("<button>").appendTo(giphyPagingButtonsDiv);
+    giphyPagingButtonBack.attr('id', 'giphyPagingButtonBack');
+    giphyPagingButtonBack.addClass("btn btn-xs btn-default");
+    giphyPagingButtonBack.addClass("glyphicon glyphicon-arrow-left");
+    giphyPagingButtonBack.css('margin-right', '5px');
+    giphyPagingButtonBack.hide();
+
+    var giphyPagingButtonForward = $("<button>").appendTo(giphyPagingButtonsDiv);
+    giphyPagingButtonForward.attr('id', 'giphyPagingButtonForward');
+    giphyPagingButtonForward.addClass("btn btn-xs btn-default");
+    giphyPagingButtonForward.addClass("glyphicon glyphicon-arrow-right");
+    giphyPagingButtonForward.css('margin-left', '5px');
+    giphyPagingButtonForward.hide();
 
     // add footer div
     var footerDiv = $("<div>").appendTo(contentDiv);
     footerDiv.addClass("modal-footer");
   }
 
-  function loadGifs(searchString) {
+  function loadGifs() {
+
+    var searchString = $("#giphyModalInput").val();
     
     $( "#giphyUrls" ).empty();
 
@@ -132,7 +167,14 @@ var GiphyButton = (function () {
     var search = getSearchQuery(searchString);
 
     if(search) {
-      jqxhr = $.get( "https://api.giphy.com/v1/gifs/search?q=" + search + "&api_key=dc6zaTOxFJmzC")
+
+      var url = "http://api.giphy.com/v1/gifs/search?" +
+                "q=" + search + 
+                "&limit=" + pageSize +
+                "&offset=" + pagingOffset + 
+                "&api_key=dc6zaTOxFJmzC";
+
+      jqxhr = $.get(url)
       .done(function(result) {
         appendGifUrls("#giphyUrls", result.data)
       })
@@ -143,6 +185,24 @@ var GiphyButton = (function () {
       });  
     }
     
+  }
+
+  function decreasePagingOffset() {
+    pagingOffset = pagingOffset - pageSize; 
+    loadGifs();
+
+    if(pagingOffset == 0) {
+      $('#giphyPagingButtonBack').hide();
+    }
+  }
+
+  function increasePagingOffset() {
+    if(pagingOffset == 0) {
+      $('#giphyPagingButtonBack').show();
+    }
+
+    pagingOffset = pagingOffset + pageSize;
+    loadGifs();
   }
 
   function getSearchQuery(searchString) {
@@ -156,9 +216,13 @@ var GiphyButton = (function () {
     imageLinkMap = {};
 
     if(data.length == 0) {
+      $('#giphyPagingButtonBack').hide();
+      $('#giphyPagingButtonForward').hide();
       addNoItemsFoundMessage(id);
       return;
     }
+
+    $('#giphyPagingButtonForward').show();
 
     var images = new Array();    
     data.forEach(function(entry) {
@@ -177,7 +241,7 @@ var GiphyButton = (function () {
     var listContainer = $(id);
     var listDiv = $("<div class=\"giphyList\">").appendTo(listContainer);
     var list = $("<ul>").appendTo(listDiv);
-    var searchResults = listData.length < searchResultsUpperBound ? listData.length : searchResultsUpperBound;
+    var searchResults = listData.length < pageSize ? listData.length : pageSize;
 
     for (i = 0; i < searchResults; i++) { 
       var listItem = $("<li>").appendTo(list);
@@ -191,7 +255,8 @@ var GiphyButton = (function () {
 
   function addNoItemsFoundMessage(id) {
     var listContainer = $(id);
-    var listDiv = $("<p class=\"text-center\">No items found. Try another search phrase.</p>").appendTo(listContainer);
+    var noItemsFoundParagraph = $("<p>No items found. Try another search phrase.</p>").appendTo(listContainer);
+    noItemsFoundParagraph.addClass("text-center");
   }
 
   function postImageLink(event) {
@@ -207,7 +272,9 @@ var GiphyButton = (function () {
       var gifUrl = imageLinkMap[event.target.src];
 
       if(typeof gifUrl !== 'undefined') {
-        $(giphyTextInput).val(currentValue + gifUrl);  
+        $('#giphyPagingButtonBack').hide();
+        $('#giphyPagingButtonForward').hide();
+        $(giphyTextInput).val(currentValue + gifUrl);
       }
 
     };
