@@ -168,7 +168,7 @@ var GiphyButton = (function () {
 
     if(search) {
 
-      var url = "http://api.giphy.com/v1/gifs/search?" +
+      var url = "https://api.giphy.com/v1/gifs/search?" +
                 "q=" + search + 
                 "&limit=" + pageSize +
                 "&offset=" + pagingOffset + 
