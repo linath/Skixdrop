@@ -68,8 +68,8 @@ if (app.get('env') === 'development') {
 var sessionSettings = {
     store: sessionStore,
     secret: config.session.secret,
-    cookie: { path: '/', httpOnly: true, secure: false, maxAge: null},
-    resave: false,  saveUninitialized: false, name: config.session.name
+    cookie: {path: '/', httpOnly: true, secure: false, maxAge: null},
+    resave: false, saveUninitialized: false, name: config.session.name
 };
 
 app.use(session(sessionSettings));
@@ -80,9 +80,9 @@ app.use('/', routes);
 app.use('/room', ensureAuthenticated, roomRoute);
 
 passport.use(new SpotifyStrategy({
-        clientID:  config.spotify.clientID,
+        clientID: config.spotify.clientID,
         clientSecret: config.spotify.clientSecret,
-        callbackURL:  config.spotify.callbackURL
+        callbackURL: config.spotify.callbackURL
     },
     function (accessToken, refreshToken, profile, done) {
         //console.log('got user', profile);
@@ -91,23 +91,23 @@ passport.use(new SpotifyStrategy({
 ));
 
 passport.use(new FacebookStrategy({
-        clientID:  config.facebook.clientID,
+        clientID: config.facebook.clientID,
         clientSecret: config.facebook.clientSecret,
-        callbackURL:  config.facebook.callbackURL,
+        callbackURL: config.facebook.callbackURL,
         profileFields: ['name', 'photos']
     },
-    function(accessToken, refreshToken, profile, done) {
+    function (accessToken, refreshToken, profile, done) {
         //User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-            return done(null, profile);
+        return done(null, profile);
         //});
     }
 ));
 
 app.get('/auth/spotify',
-    function(req,res,next) {
-      if(req.isAuthenticated()) {
-          return res.redirect('/room');
-      }
+    function (req, res, next) {
+        if (req.isAuthenticated()) {
+            return res.redirect('/room');
+        }
         next();
     },
     passport.authenticate('spotify'),
@@ -124,8 +124,8 @@ app.get('/auth/spotify/callback',
     });
 
 app.get('/auth/facebook',
-    function(req,res,next) {
-        if(req.isAuthenticated()) {
+    function (req, res, next) {
+        if (req.isAuthenticated()) {
             return res.redirect('/room');
         }
         next();
@@ -176,7 +176,9 @@ app.use(function (err, req, res) {
 
 // test authentication
 function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) { return next(); }
+    if (req.isAuthenticated()) {
+        return next();
+    }
     res.redirect('/#no-active-session')
 }
 
@@ -190,6 +192,7 @@ var server = require('http').Server(app);
  * Listen on provided port, on all network interfaces.
  */
 
+console.log('starting server on port ', port);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
@@ -205,20 +208,44 @@ var socketSession = socketIOSession(sessionSettings);
 
 io.use(socketSession.parser);
 
+var disconnected = {};
 
-var chat = io.of('/chat').on('connection', function(socket){
 
-    socket.emit('welcome', {users:  getUsers(chat)});
-	socket.broadcast.emit('message', {message: 'hat den Raum betreten!', user: getUserDataFromSessions(socket.session.passport.user)});
+var chat = io.of('/chat').on('connection', function (socket) {
 
-    socket.on('getChatUser', function(){
-        socket.emit('userInChat', {users:  getUsers(chat)});
+    socket.emit('welcome', {users: getUsers(chat)});
+
+    if (disconnected[socket.session.passport.user]) {
+        clearTimeout(disconnected[socket.session.passport.user]);
+        disconnected[socket.session.passport.user] = null;
+        delete disconnected[socket.session.passport.user];
+    } else {
+        socket.broadcast.emit('message', {
+            message: 'hat den Raum betreten!',
+            user: getUserDataFromSessions(socket.session.passport.user)
+        });
+    }
+
+    socket.on('getChatUser', function () {
+        socket.emit('userInChat', {users: getUsers(chat)});
     });
 
-    socket.on('send-message', function(data){
-	if(data.message.trim() == '') return;
+    socket.on('disconnect', function () {
+        var userData = getUserDataFromSessions(socket.session.passport.user);
+        var socketUser = socket.session.passport.user;
 
-    chat.emit('message', {message: data.message, user:  getUserDataFromSessions(socket.session.passport.user)});
+        disconnected[socket.session.passport.user] = setTimeout(function () {
+            chat.emit('message', {message: 'hat den Raum verlassen!', user: userData});
+            disconnected[socketUser] = null;
+            delete disconnected[socketUser];
+        }, 10000);
+
+    });
+
+    socket.on('send-message', function (data) {
+        if (data.message.trim() == '') return;
+
+        chat.emit('message', {message: data.message, user: getUserDataFromSessions(socket.session.passport.user)});
     });
 });
 
@@ -226,9 +253,8 @@ chat.use(socketSession.parser);
 
 function getUsers(chat) {
     var usersInChat = [];
-    for(var key in chat.connected){
+    for (var key in chat.connected) {
         var client = chat.connected[key];
-        console.log('client', client);
         usersInChat.push(getUserDataFromSessions(client.session.passport.user));
 
     }
@@ -296,11 +322,14 @@ function onListening() {
     debug('Listening on ' + bind);
 }
 
-function getUserDataFromSessions(userSession){
+function getUserDataFromSessions(userSession) {
     var user;
-    if(userSession.provider === 'spotify'){
-        user =  {name: userSession.displayName.split(' ',1)[0], image: userSession.photos[0]}
-    } else if(userSession.provider === 'facebook') {
+    if (userSession.provider === 'spotify') {
+        user = {
+            name: userSession.displayName != undefined ? userSession.displayName.split(' ', 1)[0] : userSession.username.split('.', 1)[0],
+            image: userSession.photos[0] != undefined ? userSession.photos[0] : '/images/default-avatar.jpg'
+        }
+    } else if (userSession.provider === 'facebook') {
         user = {name: userSession.name.givenName, image: userSession.photos[0].value}
     }
     return user;

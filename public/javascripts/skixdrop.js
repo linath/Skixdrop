@@ -43,18 +43,17 @@ $(function () {
             return null;
         }
     }
-
-    var spotifyRegex = /^https?:\/\/open\.spotify\.com\/(album|track|user\/[^/]+\/playlist)\/([a-zA-Z0-9]+)$/;
+    var spotifyTrackRegex = /^https?:\/\/open\.spotify\.com\/(album|track|user\/[^/]+\/playlist)\/([a-zA-Z0-9]+)$/;
     if (typeof String.prototype.isSpotifyUrl != 'function') {
         String.prototype.isSpotifyUrl = function () {
-            var match = this.match(spotifyRegex);
+            var match = this.match(spotifyTrackRegex);
             return !!(match && match[1] && match[2]);
         }
     }
 
     if (typeof String.prototype.getSpotifyEmbedUrl != 'function') {
         String.prototype.getSpotifyEmbedUrl = function () {
-            var match = this.match(spotifyRegex);
+            var match = this.match(spotifyTrackRegex);
             if (match && match[1] && match[2]) {
                 return 'spotify:' + match[1].replace(/\//g, ':') + ':' + match[2];
             }
@@ -189,7 +188,14 @@ $(function () {
     });
 
     function parseAndShowMessage(data) {
-        var cr = $('<div/>').addClass('chat-row').append($('<div/>').addClass('chat-user')).append($('<div/>').addClass('chat-messages').append($('<span/>'))).append($('<div/>').addClass('chat-extras').append($('<div/>').addClass('time').attr('title', moment().calendar()).attr('data-time', moment().format()).text(moment().fromNow())));
+        var cr = $('<div/>').addClass('chat-row').append($('<div/>').addClass('chat-user')).append($('<div/>').addClass('chat-messages').append($('<span/>'))).append($('<div/>').addClass('chat-extras').append($('<button/>').append($('<span/>').html('&times;')).addClass('close').hide().click(function (e){
+           cr.hide('fast', function(){cr.remove()});
+        }), $('<div/>').addClass('time').attr('title', moment().calendar()).attr('data-time', moment().format()).text(moment().fromNow())));
+        cr.hover(function(){
+            cr.find('.close').show('fast');
+        }, function(){
+            cr.find('.close').hide('fast');
+        });
         $('.chat-scroll').append(cr);
 
         var message = data.message;
@@ -206,6 +212,21 @@ $(function () {
         }
 
         message = message.replace(/</g, '&lt;');
+
+        // spotify:user:1121731678:playlist:0yRouXbOzd32avz7hpmg24
+        // https://open.spotify.com/user/1121731678/playlist/0yRouXbOzd32avz7hpmg24
+        var res = message.match(/spotify:(album|track|user:[^/]+:playlist):[a-zA-Z0-9]+/g);
+
+        if (res) {
+            $.unique(res);
+            res.forEach(function (uri) {
+                    $('.chat-extras', cr).append(
+                            $('<iframe>')
+                                .attr('src', 'https://embed.spotify.com/?uri=' + uri)
+                            .attr('width', 300).attr('height', uri.indexOf(':track:') !== -1 ? 80 : 380).attr('frameborder', 0).attr('allowtransparency', true)).append('<br/>');
+                });
+        }
+
 
         res = message.match(/(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?/ig);
 
@@ -248,15 +269,29 @@ $(function () {
 
 
         var msgs = message.split(/[<]/g);
+
         message = '';
         $.each(msgs, function(idx, msg) {
             if(idx > 0) {
                 message += '<';
             }
-            if(msg.indexOf('a href')!== 0) {
-                message += $.emoticons.replace(msg, function (name, code) {
-                    return $('<img/>').attr('src', '/images/emoticons/' + name).attr('title', code)[0].outerHTML;
+            if(msg.indexOf('a href') !== 0) {
+
+                var submsg = msg.split(/[ ]/g);
+                $.each(submsg, function(sidx,smsg){
+                    if(sidx > 0) {
+                        message += ' ';
+                    }
+                    if (smsg.indexOf('spotify:')!== 0) {
+
+                        message += $.emoticons.replace(smsg, function (name, code) {
+                            return $('<img/>').attr('src', '/images/emoticons/' + name).attr('title', code)[0].outerHTML;
+                        });
+                    } else {
+                        message += smsg
+                    }
                 });
+
             } else  {
                 message += msg
             }
@@ -278,7 +313,7 @@ $(function () {
                 $(elm).text(moment($(elm).attr('data-time')).fromNow());
             }
         });
-    }, 1000);
+    }, 10000);
 
     function clearFavCounter(){
         unreadMessages = 0;

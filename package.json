@@ -1,9 +1,9 @@
 {
-  "name": "Skixdrop",
-  "version": "1.0.0",
+  "name": "skixdrop",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "node app"
+    "start": "node ./app"
   },
   "dependencies": {
     "body-parser": "~1.10.1",
