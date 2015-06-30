@@ -213,8 +213,6 @@ $(function () {
 
         message = message.replace(/</g, '&lt;');
 
-        // spotify:user:1121731678:playlist:0yRouXbOzd32avz7hpmg24
-        // https://open.spotify.com/user/1121731678/playlist/0yRouXbOzd32avz7hpmg24
         var res = message.match(/spotify:(album|track|user:[^/]+:playlist):[a-zA-Z0-9]+/g);
 
         if (res) {
