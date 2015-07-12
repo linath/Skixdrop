@@ -3,7 +3,7 @@
  */
 $(function () {
 
-    var gipyhButton = new GiphyButton("giphyButton", "message", "giphyModal");
+    new GiphyButton("giphyButton", "message", "giphyModal");
 
     var window_focus = true;
 
@@ -26,19 +26,21 @@ $(function () {
             return this.indexOf(suffix, this.length - suffix.length) !== -1;
         };
     }
-    var youtubeRegex = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+
+    // Regex from https://github.com/regexps/youtube-regex
+    var youtubeRegex = /(?:youtube\.com\/\S*(?:(?:\/e(?:mbed))?\/|watch\?(?:\S*?&?v\=))|youtu\.be\/)([a-zA-Z0-9_-]{6,11})/;
     if (typeof String.prototype.isYoutubeUrl != 'function') {
         String.prototype.isYoutubeUrl = function () {
             var match = this.match(youtubeRegex);
-            return !!(match && match[7].length == 11);
+            return !!(match && match[1]);
         }
     }
 
     if (typeof String.prototype.getYoutubeVideoId != 'function') {
         String.prototype.getYoutubeVideoId = function () {
             var match = this.match(youtubeRegex);
-            if (match && match[7].length == 11) {
-                return match[7];
+            if (match && match[1]) {
+                return match[1];
             }
             return null;
         }
